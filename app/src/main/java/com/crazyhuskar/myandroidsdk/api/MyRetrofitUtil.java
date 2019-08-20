@@ -4,7 +4,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
-import com.amap.api.col.n3.rb;
 import com.crazyhuskar.myandroidsdk.util.MyUtilLog;
 
 import java.io.File;
@@ -552,9 +551,9 @@ public class MyRetrofitUtil {
 
                                 final boolean result = MyDownLoadManager.writeResponseBodyToDisk(path + File.separator + fileName, responseBody);
 
-                                new Handler(Looper.getMainLooper()).post(new rb() {
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
                                     @Override
-                                    public void runTask() {
+                                    public void run() {
                                         if (result) {
                                             myProgressCallback.onSuccess(path + File.separator + fileName);
                                         } else {
