@@ -510,11 +510,11 @@ public class MyRetrofitUtil {
      */
     public void downloadFile(Map<String, String> headers, final String url, final String path, final String fileName, final MyProgressCallback<String> myProgressCallback) {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        if (isDebug) {
+//        if (isDebug) {
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
             httpClient.addInterceptor(logging);
-        }
+//        }
         httpClient.addNetworkInterceptor(new Interceptor() {
             @Override
             public okhttp3.Response intercept(Chain chain) throws IOException {
