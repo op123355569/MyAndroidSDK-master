@@ -1,7 +1,10 @@
 package com.crazyhuskar.myandroidsdk.api;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 
+import com.amap.api.col.n3.rb;
 import com.crazyhuskar.myandroidsdk.util.MyUtilLog;
 
 import java.io.File;
@@ -542,13 +545,26 @@ public class MyRetrofitUtil {
                     }
 
                     @Override
-                    public void onNext(ResponseBody responseBody) {
-                        if (MyDownLoadManager.writeResponseBodyToDisk(path + File.separator + fileName, responseBody)) {
-                            myProgressCallback.onSuccess(path + File.separator + fileName);
-                        } else {
-                            myProgressCallback.onFailure("下载失败");
-                        }
-                        disposable.dispose();
+                    public void onNext(final ResponseBody responseBody) {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                final boolean result = MyDownLoadManager.writeResponseBodyToDisk(path + File.separator + fileName, responseBody);
+
+                                new Handler(Looper.getMainLooper()).post(new rb() {
+                                    @Override
+                                    public void runTask() {
+                                        if (result) {
+                                            myProgressCallback.onSuccess(path + File.separator + fileName);
+                                        } else {
+                                            myProgressCallback.onFailure("下载失败");
+                                        }
+                                        disposable.dispose();
+                                    }
+                                });
+                            }
+                        }).start();
                     }
 
                     @Override
